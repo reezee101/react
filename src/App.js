@@ -20,10 +20,11 @@ function App() {
           <Navbar.Brand href="/" className='shopName'>W A V E</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="/" className='menu'>Home</Nav.Link>
-            <Nav.Link onClick={()=>{ navigate('/detail')}} className='menu'>Cart</Nav.Link>
+            <Nav.Link onClick={() => { navigate('/detail') }} className='menu'>Cart</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
+      
       <Routes>
         <Route path='/' element={
           <Main title={title} setTitle={setTitle}></Main>
@@ -33,7 +34,7 @@ function App() {
           <Detail title={title} ></Detail>
         }></Route>
 
-        <Route path= '/about' element={<About></About>}>
+        <Route path='/about' element={<About></About>}>
           <Route path='member' element={<div>and member</div>}></Route>
           <Route path='location' element={<div>and location</div>}></Route>
         </Route>
@@ -49,12 +50,8 @@ function App() {
         }>
         </Route>
       </Routes>
-      <div>
-        <Link to='/'>home</Link>
-      </div>
-      <div>
-        <Link to='/detail'>detail</Link>
-      </div>
+
+
     </div>
   );
 
@@ -73,27 +70,27 @@ function App() {
             }
           </div>
         </div>
-        <button onClick={()=>{
+        <button onClick={() => {
           axios.get('/data.json') //url 
-          .then((result)=>{ //result : 위 url로 요청해서 받아온 데이터 
-            //console.log(result.data)
-            // let copy = [...props.title];
-            // for(let i = 0; i < result.data.length; i++){
-            //   copy.push(result.data[i]);
-            // }
-            let copy = [...props.title, ...result.data];
-            props.setTitle(copy); 
-            console.log(copy)
-          })
-          .catch(()=>{  //요청 실패시 동작 할 코드 
-            console.log('요청 실패')
-          })
+            .then((result) => { //result : 위 url로 요청해서 받아온 데이터 
+              //console.log(result.data)
+              // let copy = [...props.title];
+              // for(let i = 0; i < result.data.length; i++){
+              //   copy.push(result.data[i]);
+              // }
+              let copy = [...props.title, ...result.data];
+              props.setTitle(copy);
+              console.log(copy)
+            })
+            .catch(() => {  //요청 실패시 동작 할 코드 
+              console.log('요청 실패')
+            })
 
           // Promise.all([ axios.get('/url1', '/url2')])
           // .then(()=>{
           //   //위 두 get 요청이 완료 시 시작될 코드 
           // })
-           
+
         }}>view more</button>
       </>
     )
@@ -102,8 +99,8 @@ function App() {
   function Card(props) {
     return (
       <div className="col-md-4">
-        <img src={props.title.img} width='80%' onClick={()=>{
-          window.location.href='/detail/' + props.title.id;
+        <img src={props.title.img} width='80%' onClick={() => {
+          window.location.href = '/detail/' + props.title.id;
         }}></img>
         <h4>{props.title.title}</h4>
         <p>{props.title.price}</p>
@@ -111,25 +108,31 @@ function App() {
     )
   }
 
-  function About(){
+  function About() {
     return (
       <>
-      <h4>
-        about page 
-      </h4>
-      <Outlet></Outlet>
+        <h4>
+          about page
+        </h4>
+        <Outlet></Outlet>
       </>
     )
   }
 
-  function Event(){
-    return(
+  function Event() {
+    return (
       <>
-      <h4>EVENT!</h4>
-      <Outlet></Outlet>
+        <h4>EVENT!</h4>
+        <Outlet></Outlet>
       </>
     )
   }
 }
+// <div>
+// <Link to='/'>home</Link>
+// </div>
+// <div>
+// <Link to='/detail'>detail</Link>
+// </div>
 
 export default App;

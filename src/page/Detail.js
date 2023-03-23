@@ -14,7 +14,14 @@ function Detail(props) {
     let [alert, setAlert] = useState(true);
     let [inputVal, setInputVal] = useState('');
     let [tab, setTab] = useState(0);
+    let [fade, setFade] = useState('');
 
+    useEffect(()=>{
+        setFade(' end')
+        return (()=>{
+            setFade('')
+        });
+    });
 
     //mount, update시 실행되는 코드(html 다 렌더링 되고 난 후 실행됨
     //                             - 어려운 연산, 서버에서 데이터 받아올 때, 타이머 사용시)
@@ -51,7 +58,7 @@ function Detail(props) {
     }, [inputVal])   //[inputVal] : inputVal이라는 변수가 mount 되거나 update 될 때 실행
     //빈 대괄호 : 컴포넌트 mount 되는 시점 1회만 실행 
 
-    return (<div className="container">
+    return (<div className={'container start ' + fade}>
         <div className="row">
             {
                 alert == true ? <div className="alert alert-warning">2초 이내 구매시 할인 </div> : ''
@@ -86,7 +93,7 @@ function Detail(props) {
                     }}>버튼2</Nav.Link>
                 </Nav.Item>
             </Nav>
-            <TabContents tab={tab}></TabContents>
+            <TabContents tab={tab} title={props.title}></TabContents>
 
 
             {
@@ -99,7 +106,7 @@ function Detail(props) {
     </div>)
 };
 
-function TabContents({ tab }) {
+function TabContents({ tab, title}) {
 
     let [fade, setFade] = useState('');
 
@@ -113,7 +120,7 @@ function TabContents({ tab }) {
 
     return (
         <div className={'start ' + fade}>
-            {[<div>내용0</div>, <div>내용1</div>, <div>내용2</div>][tab]}
+            {[<div>{title[tab].content}</div>, <div>내용1</div>, <div>내용2</div>][tab]}
         </div>
     )
 
