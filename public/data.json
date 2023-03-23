@@ -1,0 +1,23 @@
+[
+  {
+    "id" : 3,
+    "title" : "Wave Bubble1",
+    "content" : "SERIES OF BUBBLE",
+    "price" : 12000,
+    "img" : "https://cdn.pixabay.com/photo/2022/06/18/08/56/sea-7269434_960_720.jpg"
+  },
+  {
+    "id" : 4,
+    "title" : "Wave Bubble2",
+    "content" : "SERIES OF BUBBLE",
+    "price" : 12000,
+    "img" : "https://cdn.pixabay.com/photo/2015/01/26/14/45/sea-612698_960_720.jpg"
+  },
+  {
+    "id" : 5,
+    "title" : "Wave Bubble3",
+    "content" : "SERIES OF BUBBLE",
+    "price" : 12000,
+    "img" : "https://cdn.pixabay.com/photo/2019/08/22/22/37/sea-4424546_960_720.jpg"
+  }
+]
