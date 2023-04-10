@@ -3,16 +3,34 @@ import logo from './logo.svg';
 import './App.css';
 
 import { Container, Nav, Navbar } from 'react-bootstrap';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import data from './data.js';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
 import Detail from './page/Detail';
 import Cart from './page/Cart';
 import axios from 'axios';
+import { useQuery } from 'react-query';
 
 function App() {
   let [title, setTitle] = useState(data);
   let navigate = useNavigate(); //페이지 이동을 도와주는 함수 
+
+  // axios.get('https://codingapple1.github.io/userdata.json')
+  //   .then((a) => {
+  //     a.data
+  //   })
+  let result = useQuery('getName', ()=>{
+    return axios.get('https://codingapple1.github.io/userdata.json')
+    .then((a) => {
+      console.log('refetch 되고있음')
+      return a.data
+     }),
+     {staleTime : 2000} //refetchTime 설정 
+  })
+
+  // result.data -> 성공
+  // result.error -> 실패
+  // result.isLoading -> 로딩중
 
   return (
     <div className="App">
@@ -21,11 +39,15 @@ function App() {
           <Navbar.Brand href="/" className='shopName'>W A V E</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="/" className='menu'>Home</Nav.Link>
-            <Nav.Link onClick={() => { navigate('/detail') }} className='menu'>Cart</Nav.Link>
+            <Nav.Link onClick={() => { navigate('/cart') }} className='menu'>Cart</Nav.Link>
           </Nav>
+          <Nav className='ms-auto'> 
+          {result.isLoading && '로딩중입니다!'}
+          {result.data && '반가와요 ! ' + result.data.name}
+          {result.error &&'사용자를 불러오는데에 실패하였습니다 ㅠㅠ '}</Nav>
         </Container>
       </Navbar>
-      
+
       <Routes>
         <Route path='/' element={
           <Main title={title} setTitle={setTitle}></Main>
@@ -35,7 +57,7 @@ function App() {
           <Detail title={title} ></Detail>
         }></Route>
 
-<Route path='/cart' element={<Cart></Cart>}> </Route>
+        <Route path='/cart' element={<Cart></Cart>}> </Route>
 
         <Route path='/about' element={<About></About>}>
           <Route path='member' element={<div>and member</div>}></Route>

@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import styled from 'styled-components';
 import { useEffect, useState } from "react";
 import { Nav } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux'  //useSelector : store에 있는 state 가져올 수 있음 
+import { cartPlus } from './../store.js'
 
 let ColorBtn = styled.button`
     background: ${props => props.bg};
@@ -9,6 +11,13 @@ let ColorBtn = styled.button`
     padding: 10px;
 `
 function Detail(props) {
+
+    let store = useSelector((state) => {  //store 가져오는 함수 
+        return state
+    })
+
+    let dispatch = useDispatch()   //import 한 changeName 함수를 쓰기 위해 필요함 
+                                    //(store.js에 요청을 보내주는 함수 )
 
     let { id } = useParams();
     let [alert, setAlert] = useState(true);
@@ -56,6 +65,23 @@ function Detail(props) {
             console.log('숫자 입력 금지');
         }
     }, [inputVal])   //[inputVal] : inputVal이라는 변수가 mount 되거나 update 될 때 실행
+
+
+    //최근 본 상품 
+    useEffect(()=>{
+        if(!localStorage.getItem('watched')){
+            localStorage.setItem('watched', JSON.stringify([]))
+        }else{
+            let wch = localStorage.getItem('watched');
+            wch = JSON.parse(wch);
+            wch.push(id);
+            wch = new Set(wch);
+            wch = Array.from(wch);
+            localStorage.setItem('watched', JSON.stringify(wch))
+        }
+    }, [])
+
+
     //빈 대괄호 : 컴포넌트 mount 되는 시점 1회만 실행 
 
     return (<div className={'container start ' + fade}>
@@ -74,7 +100,10 @@ function Detail(props) {
                 <h4 className="pt-5">{props.title[id].title}</h4>
                 <p>{props.title[id].content}</p>
                 <p>{props.title[id].price} won</p>
-                <button className="btn btn-danger">주문하기</button>
+                <button className="btn btn-danger" onClick={()=>{
+                    dispatch(cartPlus({'id': props.title[id].id, 'name': props.title[id].content, 'count': 3 }));
+                    console.log(store.cart)
+                }}>주문하기</button>
             </div>
             <Nav variant="tabs" defaultActiveKey="link0">
                 <Nav.Item>
