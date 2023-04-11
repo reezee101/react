@@ -3,13 +3,17 @@ import logo from './logo.svg';
 import './App.css';
 
 import { Container, Nav, Navbar } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import data from './data.js';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
-import Detail from './page/Detail';
-import Cart from './page/Cart';
 import axios from 'axios';
 import { useQuery } from 'react-query';
+// import Detail from './page/Detail';
+// import Cart from './page/Cart';
+
+const Detail = lazy(()=> import('./page/Detail.js'))
+const Cart = lazy(()=> import('./page/Cart.js'))
+const Test = lazy(()=> import('./page/Test.js'))
 
 function App() {
   let [title, setTitle] = useState(data);
@@ -57,7 +61,8 @@ function App() {
           <Detail title={title} ></Detail>
         }></Route>
 
-        <Route path='/cart' element={<Cart></Cart>}> </Route>
+<Route path='/cart' element={<Cart></Cart>}> </Route>
+<Route path='/test' element={<Test></Test>}> </Route>
 
         <Route path='/about' element={<About></About>}>
           <Route path='member' element={<div>and member</div>}></Route>
